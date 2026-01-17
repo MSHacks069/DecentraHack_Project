@@ -141,3 +141,5 @@ STATICFILES_DIRS = [
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+MEDIA_URL = f'C:/Users/HP/OneDrive/Desktop/wheelos_live-main/media/'
