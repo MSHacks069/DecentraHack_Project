@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.contrib.auth.models import User, auth
-from .models import Earning
+from .models import Earning, mapPointers
 from django.contrib.auth import authenticate, login
 
 
@@ -62,3 +62,18 @@ def display(request):
     user = request.user
     return render(request, 'display.html')
 
+
+def provider(request):
+    if request.method == 'POST':
+        curr = mapPointers()
+        curr.user = request.user
+        curr.photo = request.FILES['photo']
+        curr.latitude = request.POST['latitude']
+        curr.longitude = request.POST['longitude']
+        curr.rate = request.POST['rate']
+        curr.status = False
+        curr.email = request.user.email
+        curr.save()
+        return redirect('pdashboard')
+    else:
+        return render(request, 'provider.html')
