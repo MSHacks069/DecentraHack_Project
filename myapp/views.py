@@ -58,3 +58,7 @@ def logout(request):
     return redirect('login')
 
 
+def display(request):
+    user = request.user
+    return render(request, 'display.html')
+
