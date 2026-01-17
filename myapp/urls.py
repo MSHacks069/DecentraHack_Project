@@ -16,6 +16,8 @@ urlpatterns = [
     path('display',views.display,name='display'),
     path('need',views.need,name='need'),
     path('provider',views.provider,name='provider'),
-    path('profileShow/', views.profileShow, name='profileShow')
+    path('profileShow/', views.profileShow, name='profileShow'),
+    path('pdashboard',views.pdashboard,name='pdashboard'),
+    path('delLocation/<int:pk>',views.delLocation,name='delLocation')
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

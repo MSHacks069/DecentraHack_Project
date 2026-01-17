@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User, auth
 from .models import Earning, mapPointers
 from django.contrib.auth import authenticate, login
+from django.urls import reverse
 
 
 
@@ -82,3 +83,24 @@ def provider(request):
 def profileShow(request):
     lists = mapPointers.objects.filter(user = request.user)
     return render(request, 'profileShow.html',locals())
+
+def pdashboard(request):
+    lists = mapPointers.objects.filter(user = request.user)
+    earn = Earning.objects.get(user = request.user)
+    return render(request,'pdashboard.html',locals())
+
+
+def delLocation(request, pk=None):
+    hw = get_object_or_404(mapPointers, id=pk)
+    current_url = request.META.get('HTTP_REFERER')
+
+    hw.delete()
+
+    if 'pdashboard' in current_url:
+        redirect_url = reverse('pdashboard')
+    elif 'profile' in current_url:
+        redirect_url = reverse('profile')
+    else:
+        redirect_url = reverse('display')
+
+    return redirect(redirect_url)
