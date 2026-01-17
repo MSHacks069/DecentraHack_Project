@@ -2,6 +2,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.contrib.auth.models import User, auth
 from .models import Earning
+from django.contrib.auth import authenticate, login
+
 
 
 def landingPage(request):
@@ -31,3 +33,26 @@ def register(request):
     
     else:
         return render(request, 'register.html')
+    
+
+
+
+def login(request):
+    if request.method == 'POST':
+        username = request.POST['username'].strip()
+        password = request.POST['password']
+        user = authenticate(request, username=username , password = password)
+
+        if user is not None:
+            auth.login(request,user)
+            return redirect('display')
+        else:
+            messages.info(request, 'Invalid credentials')
+            return redirect('login')
+    else:
+        return render(request, 'login.html')
+
+    
+def logout(request):
+    auth.logout(request)
+    return redirect('login')
