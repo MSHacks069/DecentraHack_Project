@@ -77,3 +77,8 @@ def provider(request):
         return redirect('pdashboard')
     else:
         return render(request, 'provider.html')
+    
+
+def profileShow(request):
+    lists = mapPointers.objects.filter(user = request.user)
+    return render(request, 'profileShow.html',locals())
