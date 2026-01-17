@@ -18,6 +18,8 @@ urlpatterns = [
     path('provider',views.provider,name='provider'),
     path('profileShow/', views.profileShow, name='profileShow'),
     path('pdashboard',views.pdashboard,name='pdashboard'),
-    path('delLocation/<int:pk>',views.delLocation,name='delLocation')
+    path('delLocation/<int:pk>',views.delLocation,name='delLocation'),
+    path('show/',views.show,name='show')
+
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

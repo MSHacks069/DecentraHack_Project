@@ -104,3 +104,13 @@ def delLocation(request, pk=None):
         redirect_url = reverse('display')
 
     return redirect(redirect_url)
+
+
+
+def show(request):
+    lists = mapPointers.objects.filter(user = request.user)
+    return render(request, 'show.html',locals())
+
+def need(request):
+    lists = mapPointers.objects.all()
+    return render(request, 'need.html',locals())
