@@ -22,7 +22,15 @@ urlpatterns = [
     path('show/',views.show,name='show'),
     path('redirecting/', views.redirecting, name='redirecting'),
     path('confirmed/', views.confirmed, name='confirmed'),
-    path('profile/', views.profile, name='profile')
+    path('profile/', views.profile, name='profile'),
+    path('book',views.book,name='book'),
+    path('find/<int:id>', views.find, name='find'),
+    path('tripOver/<int:id>', views.tripOver, name='tripOver'),
+    path('myBookings/<int:id>', views.myBookings, name='myBookings'),
+    path('profileShow/', views.profileShow, name='profileShow'),
+    path('logout',views.logout,name='logout')
+
+
 
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

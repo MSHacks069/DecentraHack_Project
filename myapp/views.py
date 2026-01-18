@@ -131,3 +131,84 @@ def profile(request):
     except Previous.DoesNotExist:
         past = None
     return render(request, 'profile.html',locals())
+
+
+def book(request):
+    lists = myBooking1.objects.filter(user = request.user)
+    return render(request,'book.html',locals())
+
+def find(request,id):
+    curr = myBooking1.objects.get(id = id)
+    latitude = curr.latitude
+    longitude = curr.longitude
+    return render(request, 'find.html',locals())
+
+def tripOver(request, id):
+    try:
+        curr = get_object_or_404(myBooking1, id=id)
+        
+        new_booking = mapPointers(id=curr.var)
+        new_booking.user = User.objects.get(username=curr.name)
+        new_booking.email = new_booking.user.email
+        new_booking.status = False
+        new_booking.photo = curr.photo 
+        new_booking.rate = curr.rate  
+        new_booking.latitude = curr.latitude  
+        new_booking.longitude = curr.longitude
+        new_booking.booked_by = "empty"
+        new_booking.save()
+
+        past = Previous()
+        past.user = request.user
+        past.name = User.objects.get(username=curr.name)
+        past.latitude = curr.latitude  
+        past.longitude = curr.longitude
+        past.rate = curr.rate
+
+        past.save()
+        
+        parkerOver(curr.user.email,new_booking.user)
+        providerOver(new_booking.email,curr.user)
+        return redirect('payment')
+    except mapPointers.DoesNotExist:
+        return redirect('book')
+    
+
+def payment(request):
+    return render(request, 'payment.html')
+
+def myBookings(request, id):
+    try:
+        curr = get_object_or_404(mapPointers, id=id)
+        
+        new_booking = myBooking1()
+        new_booking.user = request.user
+        new_booking.name = curr.user
+        new_booking.photo = curr.photo 
+        new_booking.rate = curr.rate  
+        new_booking.latitude = curr.latitude  
+        new_booking.longitude = curr.longitude  
+        new_booking.var = curr.id
+        new_booking.email = curr.email
+        new_booking.save()
+
+        earn = Earning.objects.get(user = curr.user)
+        earn.earning += curr.rate
+        earn.save()
+        
+        curr.status = True 
+        curr.booked_by = request.user.username
+        curr.Booked_email = request.user.email
+        curr.save()   
+
+        confirmParker(request.user.email, curr)
+        confirmProvider(curr.email, curr, request.user.username)
+
+        return redirect('payment')
+    except mapPointers.DoesNotExist:
+        return redirect('book')
+    
+
+def profileShow(request):
+    lists = mapPointers.objects.filter(user = request.user)
+    return render(request, 'profileShow.html',locals())
