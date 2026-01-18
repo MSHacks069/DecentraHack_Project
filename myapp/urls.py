@@ -19,7 +19,10 @@ urlpatterns = [
     path('profileShow/', views.profileShow, name='profileShow'),
     path('pdashboard',views.pdashboard,name='pdashboard'),
     path('delLocation/<int:pk>',views.delLocation,name='delLocation'),
-    path('show/',views.show,name='show')
+    path('show/',views.show,name='show'),
+    path('redirecting/', views.redirecting, name='redirecting'),
+    path('confirmed/', views.confirmed, name='confirmed'),
+    path('profile/', views.profile, name='profile')
 
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
