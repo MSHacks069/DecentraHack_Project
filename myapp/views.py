@@ -4,6 +4,9 @@ from django.contrib.auth.models import User, auth
 from .models import Earning, mapPointers, myBooking1, Previous
 from django.contrib.auth import authenticate, login
 from django.urls import reverse
+from django.template.loader import render_to_string
+from django.core.mail import send_mail
+
 
 
 def landingPage(request):
@@ -212,3 +215,35 @@ def myBookings(request, id):
 def profileShow(request):
     lists = mapPointers.objects.filter(user = request.user)
     return render(request, 'profileShow.html',locals())
+
+def parkerOver(user_email, curr):
+    subject = 'Booking over'
+    context = {'curr': curr}
+    message = render_to_string('parkerOver.html', context)
+    sender_email = 'team.wheelos@gmail.com'
+    send_mail(subject, message, sender_email, [user_email])
+
+def providerOver(user_email,curr):
+    subject = 'Booking over'
+    context = {'curr': curr,}
+    message = render_to_string('providerOver.html', context)
+    sender_email = 'team.wheelos@gmail.com'
+    send_mail(subject, message, sender_email, [user_email])
+
+
+def confirmParker(user_email, curr):
+    subject = 'Parking Booking Confirmation'
+    context = {'booking_details': curr}
+    message = render_to_string('confirmParker.html', context)
+    sender_email = 'team.wheelos@gmail.com'
+    send_mail(subject, message, sender_email, [user_email])
+
+
+def confirmProvider(user, curr, username):
+    subject = 'Parking Booking Confirmation'
+    context = {'curr': curr,
+                'username':username,    
+            }
+    message = render_to_string('confirmProvider.html', context)
+    sender_email = 'team.wheelos@gmail.com'
+    send_mail(subject, message, sender_email, [user])
